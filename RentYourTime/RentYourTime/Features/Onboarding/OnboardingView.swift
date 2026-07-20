@@ -9,30 +9,42 @@ struct OnboardingView: View {
     @State private var currency: Currency = .pln
 
     private enum Step: Int {
-        case welcome, limit, price, currency
+        case welcome, screenTime, limit, price, currency
     }
 
     var body: some View {
+        Group {
+            switch step {
+            case .welcome:
+                standardStepLayout(buttonTitle: "Dalej") { welcomeStep }
+            case .screenTime:
+                ScreenTimePermissionView(onAuthorized: advance)
+            case .limit:
+                standardStepLayout(buttonTitle: "Dalej") { limitStep }
+            case .price:
+                standardStepLayout(buttonTitle: "Dalej") { priceStep }
+            case .currency:
+                standardStepLayout(buttonTitle: "Rozpocznij") { currencyStep }
+            }
+        }
+        .animation(.default, value: step)
+    }
+
+    private func standardStepLayout(buttonTitle: String, @ViewBuilder content: () -> some View) -> some View {
         VStack(spacing: 24) {
             Spacer()
 
-            switch step {
-            case .welcome: welcomeStep
-            case .limit: limitStep
-            case .price: priceStep
-            case .currency: currencyStep
-            }
+            content()
 
             Spacer()
 
-            Button(step == .currency ? "Rozpocznij" : "Dalej") {
+            Button(buttonTitle) {
                 advance()
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
         }
         .padding()
-        .animation(.default, value: step)
     }
 
     private var welcomeStep: some View {
