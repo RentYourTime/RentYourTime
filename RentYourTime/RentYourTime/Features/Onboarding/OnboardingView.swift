@@ -9,7 +9,7 @@ struct OnboardingView: View {
     @State private var currency: Currency = .pln
 
     private enum Step: Int {
-        case welcome, screenTime, limit, price, currency
+        case welcome, screenTime, chooseApps, limit, price, currency
     }
 
     var body: some View {
@@ -19,6 +19,12 @@ struct OnboardingView: View {
                 standardStepLayout(buttonTitle: "Dalej") { welcomeStep }
             case .screenTime:
                 ScreenTimePermissionView(onAuthorized: advance)
+            case .chooseApps:
+                ScreenTimeSelectionView(
+                    title: "Choose what to track",
+                    continueButtonTitle: "Zapisz i kontynuuj",
+                    onSave: advance
+                )
             case .limit:
                 standardStepLayout(buttonTitle: "Dalej") { limitStep }
             case .price:

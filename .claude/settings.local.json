@@ -22,7 +22,15 @@
       "Read(//private/tmp/Assets.xcassets.bak/**)",
       "Bash(rm -rf /tmp/Assets.xcassets.bak)",
       "Bash(xcodebuild -project RentYourTime.xcodeproj -target RentYourTimeTests -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO build)",
-      "Bash(xcodebuild -project RentYourTime.xcodeproj -scheme RentYourTime -destination 'platform=iOS Simulator,id=7F355896-CDFB-48D3-8B09-9AEFD162BB27' test)"
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -scheme RentYourTime -destination 'platform=iOS Simulator,id=7F355896-CDFB-48D3-8B09-9AEFD162BB27' test)",
+      "Read(//Users/awski/Library/Developer/Xcode/DerivedData/**)",
+      "Read(//Users/awski/Library/Developer/Xcode/DerivedData/RentYourTime-caqqqkimkuobzffwobjmphlvhtud/**)",
+      "Read(//Users/awski/Library/Developer/Xcode/**)",
+      "Read(//Users/awski/Library/Developer/**)",
+      "Read(//Users/awski/Library/**)",
+      "Bash(mkdir -p ~/Library/Developer/Xcode/DerivedData/__claude_write_test__)",
+      "Bash(security find-identity *)",
+      "Bash(defaults read *)"
     ],
     "additionalDirectories": [
       "/private/tmp/Assets.xcassets.bak"

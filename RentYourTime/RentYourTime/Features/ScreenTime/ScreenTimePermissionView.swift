@@ -3,7 +3,9 @@ import SwiftUI
 struct ScreenTimePermissionView: View {
     let onAuthorized: () -> Void
 
-    @State private var service = ScreenTimeAuthorizationService()
+    // TODO: tymczasowe — usuń `mockService:`, gdy będzie płatne konto Apple Developer
+    // i realny entitlement Family Controls (patrz MockScreenTimeService.swift).
+    @State private var service = ScreenTimeAuthorizationService(mockService: MockScreenTimeService())
 
     var body: some View {
         VStack(spacing: 24) {
