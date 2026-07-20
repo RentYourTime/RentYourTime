@@ -30,7 +30,8 @@
       "Read(//Users/awski/Library/**)",
       "Bash(mkdir -p ~/Library/Developer/Xcode/DerivedData/__claude_write_test__)",
       "Bash(security find-identity *)",
-      "Bash(defaults read *)"
+      "Bash(defaults read *)",
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -target DeviceActivityMonitorExtension -sdk iphoneos -configuration Debug CODE_SIGNING_ALLOWED=NO build)"
     ],
     "additionalDirectories": [
       "/private/tmp/Assets.xcassets.bak"

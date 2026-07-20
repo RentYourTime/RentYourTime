@@ -9,6 +9,7 @@ struct ScreenTimeSelectionView: View {
     @Environment(ScreenTimeSelectionStore.self) private var store
     @State private var draftSelection = FamilyActivitySelection()
     @State private var isPickerPresented = false
+    @State private var deviceActivityService = DeviceActivityService()
 
     var body: some View {
         VStack(spacing: 24) {
@@ -38,6 +39,7 @@ struct ScreenTimeSelectionView: View {
 
             Button(continueButtonTitle) {
                 store.save()
+                startMonitoring()
                 onSave()
             }
             .buttonStyle(.borderedProminent)
@@ -51,6 +53,18 @@ struct ScreenTimeSelectionView: View {
         }
         .onChange(of: draftSelection) { _, newValue in
             store.updateSelection(newValue)
+        }
+    }
+
+    private func startMonitoring() {
+        do {
+            try deviceActivityService.startDailyMonitoring(selection: store.selection)
+        } catch {
+            // Oczekiwany błąd na koncie bez entitlementu Family Controls —
+            // to POC, patrz docs/DEVICE_ACTIVITY_SETUP.md.
+            #if DEBUG
+            print("[ScreenTimeSelectionView] Nie udało się uruchomić monitoringu: \(error)")
+            #endif
         }
     }
 

@@ -5,6 +5,7 @@ struct SettingsView: View {
     @Environment(ScreenTimeSelectionStore.self) private var selectionStore
 
     @State private var isSelectionSheetPresented = false
+    @State private var deviceActivityService = DeviceActivityService()
 
     var body: some View {
         @Bindable var appState = appState
@@ -22,6 +23,7 @@ struct SettingsView: View {
                     if selectionStore.hasSelection {
                         Button("Wyczyść wybór", role: .destructive) {
                             selectionStore.clear()
+                            deviceActivityService.stopMonitoring()
                         }
                     }
                 }

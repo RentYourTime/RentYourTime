@@ -18,6 +18,7 @@ targets:
     platform: iOS
     sources:
       - path: RentYourTime
+      - path: Shared
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.rentyourtime.app
@@ -29,6 +30,25 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
         SWIFT_STRICT_CONCURRENCY: complete
         ENABLE_ON_DEMAND_RESOURCES: NO
+    dependencies:
+      - target: DeviceActivityMonitorExtension
+        embed: true
+
+  DeviceActivityMonitorExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Extensions/DeviceActivityMonitor
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_NAME: DeviceActivityMonitor
+        PRODUCT_BUNDLE_IDENTIFIER: com.rentyourtime.app.DeviceActivityMonitor
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: Extensions/DeviceActivityMonitor/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Extensions/DeviceActivityMonitor/DeviceActivityMonitor.entitlements
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_STRICT_CONCURRENCY: complete
 
   RentYourTimeTests:
     type: bundle.unit-test
