@@ -7,6 +7,7 @@ struct ScreenTimeSelectionView: View {
     let onSave: () -> Void
 
     @Environment(ScreenTimeSelectionStore.self) private var store
+    @Environment(AppState.self) private var appState
     @State private var draftSelection = FamilyActivitySelection()
     @State private var isPickerPresented = false
     @State private var deviceActivityService = DeviceActivityService()
@@ -58,7 +59,10 @@ struct ScreenTimeSelectionView: View {
 
     private func startMonitoring() {
         do {
-            try deviceActivityService.startDailyMonitoring(selection: store.selection)
+            try deviceActivityService.startDailyMonitoring(
+                selection: store.selection,
+                allowanceMinutes: appState.dailyFreeLimitMinutes
+            )
         } catch {
             // Oczekiwany błąd na koncie bez entitlementu Family Controls —
             // to POC, patrz docs/DEVICE_ACTIVITY_SETUP.md.
@@ -85,4 +89,5 @@ struct ScreenTimeSelectionView: View {
 #Preview {
     ScreenTimeSelectionView(title: "Choose what to track", continueButtonTitle: "Zapisz i kontynuuj", onSave: {})
         .environment(ScreenTimeSelectionStore())
+        .environment(AppState())
 }

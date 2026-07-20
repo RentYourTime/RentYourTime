@@ -1,10 +1,16 @@
 import SwiftUI
+import UIKit
 
 struct SettingsView: View {
     @Environment(AppState.self) private var appState
     @Environment(ScreenTimeSelectionStore.self) private var selectionStore
+    @Environment(NotificationService.self) private var notificationService
+    @Environment(NotificationPreferencesStore.self) private var notificationPreferencesStore
+    @Environment(\.openURL) private var openURL
 
     @State private var isSelectionSheetPresented = false
+    @State private var isNotificationExplainerPresented = false
+    @State private var pendingNotificationKind: NotificationKind?
     @State private var deviceActivityService = DeviceActivityService()
 
     var body: some View {
@@ -62,6 +68,27 @@ struct SettingsView: View {
                     }
                 }
 
+                Section("Powiadomienia") {
+                    notificationToggle("80% dziennego limitu", kind: .eightyPercent)
+                    notificationToggle("95% dziennego limitu", kind: .ninetyFivePercent)
+                    notificationToggle("Start naliczania rentu", kind: .rentStarted)
+                    notificationToggle("Wieczorne podsumowanie dnia", kind: .eveningSummary)
+
+                    if notificationService.state == .denied {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Powiadomienia są wyłączone w Ustawieniach systemowych.")
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                            Button("Otwórz Ustawienia") {
+                                if let url = URL(string: UIApplication.openSettingsURLString) {
+                                    openURL(url)
+                                }
+                            }
+                            .font(.footnote)
+                        }
+                    }
+                }
+
                 Section {
                     Button("Zresetuj onboarding", role: .destructive) {
                         appState.resetOnboarding()
@@ -69,12 +96,56 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Ustawienia")
+            .task {
+                await notificationService.refreshStatus()
+            }
             .sheet(isPresented: $isSelectionSheetPresented) {
                 ScreenTimeSelectionView(
                     title: "Śledzone aplikacje",
                     continueButtonTitle: "Zapisz zmiany",
                     onSave: { isSelectionSheetPresented = false }
                 )
+            }
+            .sheet(isPresented: $isNotificationExplainerPresented) {
+                NotificationPermissionExplainerView(onFinished: handlePermissionExplainerFinished)
+            }
+        }
+    }
+
+    private func notificationToggle(_ title: String, kind: NotificationKind) -> some View {
+        Toggle(title, isOn: Binding(
+            get: { notificationPreferencesStore.preferences.isEnabled(kind) },
+            set: { isEnabled in setNotificationEnabled(isEnabled, for: kind) }
+        ))
+    }
+
+    private func setNotificationEnabled(_ isEnabled: Bool, for kind: NotificationKind) {
+        guard isEnabled, notificationService.state == .notDetermined else {
+            applyNotificationPreference(isEnabled, for: kind)
+            return
+        }
+
+        // Wymóg: poproś o zgodę systemową dopiero po wyjaśnieniu korzyści.
+        pendingNotificationKind = kind
+        isNotificationExplainerPresented = true
+    }
+
+    private func handlePermissionExplainerFinished() {
+        guard let kind = pendingNotificationKind else { return }
+        pendingNotificationKind = nil
+
+        if notificationService.state == .authorized {
+            applyNotificationPreference(true, for: kind)
+        }
+    }
+
+    private func applyNotificationPreference(_ isEnabled: Bool, for kind: NotificationKind) {
+        notificationPreferencesStore.setEnabled(isEnabled, for: kind)
+        if kind == .eveningSummary {
+            if isEnabled {
+                notificationService.scheduleEveningSummary()
+            } else {
+                notificationService.cancelEveningSummary()
             }
         }
     }
@@ -92,4 +163,6 @@ struct SettingsView: View {
     SettingsView()
         .environment(AppState())
         .environment(ScreenTimeSelectionStore())
+        .environment(NotificationService())
+        .environment(NotificationPreferencesStore())
 }

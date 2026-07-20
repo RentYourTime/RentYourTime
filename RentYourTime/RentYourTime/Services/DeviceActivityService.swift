@@ -5,7 +5,6 @@ import Foundation
 @MainActor
 final class DeviceActivityService {
     static let activityName = DeviceActivityName("com.rentyourtime.dailyMonitoring")
-    static let thresholdEventName = DeviceActivityEvent.Name("com.rentyourtime.thresholdExceeded")
 
     private let center: DeviceActivityCenter
 
@@ -13,31 +12,36 @@ final class DeviceActivityService {
         self.center = center
     }
 
-    func startDailyMonitoring(
-        selection: FamilyActivitySelection,
-        threshold: DateComponents = DeviceActivityThreshold.default
-    ) throws {
+    /// Rejestruje trzy progi względem RZECZYWISTEGO dziennego limitu
+    /// (`allowanceMinutes`, np. z AppState.dailyFreeLimitMinutes): 80%, 95%
+    /// i 100% (start naliczania rentu). Do szybkiego testu wystarczy ustawić
+    /// mały limit w Ustawieniach (min. 15 minut).
+    func startDailyMonitoring(selection: FamilyActivitySelection, allowanceMinutes: Int) throws {
         let schedule = DeviceActivitySchedule(
             intervalStart: DateComponents(hour: 0, minute: 0),
             intervalEnd: DateComponents(hour: 23, minute: 59),
             repeats: true
         )
 
-        let event = DeviceActivityEvent(
-            applications: selection.applicationTokens,
-            categories: selection.categoryTokens,
-            webDomains: selection.webDomainTokens,
-            threshold: threshold
-        )
+        let events: [DeviceActivityEvent.Name: DeviceActivityEvent] = [
+            DeviceActivityEvent.Name(NotificationKind.eightyPercent.rawValue): makeEvent(
+                selection: selection,
+                thresholdMinutes: percentage(0.8, of: allowanceMinutes)
+            ),
+            DeviceActivityEvent.Name(NotificationKind.ninetyFivePercent.rawValue): makeEvent(
+                selection: selection,
+                thresholdMinutes: percentage(0.95, of: allowanceMinutes)
+            ),
+            DeviceActivityEvent.Name(NotificationKind.rentStarted.rawValue): makeEvent(
+                selection: selection,
+                thresholdMinutes: allowanceMinutes
+            ),
+        ]
 
         do {
-            try center.startMonitoring(
-                Self.activityName,
-                during: schedule,
-                events: [Self.thresholdEventName: event]
-            )
+            try center.startMonitoring(Self.activityName, during: schedule, events: events)
             #if DEBUG
-            print("[DeviceActivityService] Rozpoczęto monitoring, próg: \(threshold)")
+            print("[DeviceActivityService] Rozpoczęto monitoring, limit: \(allowanceMinutes) min")
             #endif
         } catch {
             #if DEBUG
@@ -52,5 +56,18 @@ final class DeviceActivityService {
         #if DEBUG
         print("[DeviceActivityService] Zatrzymano monitoring")
         #endif
+    }
+
+    private func makeEvent(selection: FamilyActivitySelection, thresholdMinutes: Int) -> DeviceActivityEvent {
+        DeviceActivityEvent(
+            applications: selection.applicationTokens,
+            categories: selection.categoryTokens,
+            webDomains: selection.webDomainTokens,
+            threshold: DateComponents(minute: thresholdMinutes)
+        )
+    }
+
+    private func percentage(_ fraction: Double, of minutes: Int) -> Int {
+        max(1, Int((Double(minutes) * fraction).rounded()))
     }
 }

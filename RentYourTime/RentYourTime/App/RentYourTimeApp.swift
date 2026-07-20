@@ -5,6 +5,8 @@ import SwiftUI
 struct RentYourTimeApp: App {
     @State private var appState = AppState()
     @State private var selectionStore = ScreenTimeSelectionStore()
+    @State private var notificationService = NotificationService()
+    @State private var notificationPreferencesStore = NotificationPreferencesStore()
     private let modelContainer: ModelContainer
 
     init() {
@@ -28,6 +30,15 @@ struct RentYourTimeApp: App {
             RootView()
                 .environment(appState)
                 .environment(selectionStore)
+                .environment(notificationService)
+                .environment(notificationPreferencesStore)
+                .task {
+                    // Idempotentne dzięki stałemu identyfikatorowi requestu —
+                    // bezpieczne do wywołania przy każdym starcie apki.
+                    if notificationPreferencesStore.preferences.isEveningSummaryEnabled {
+                        notificationService.scheduleEveningSummary()
+                    }
+                }
         }
         .modelContainer(modelContainer)
     }
