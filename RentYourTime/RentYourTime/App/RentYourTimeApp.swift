@@ -7,6 +7,7 @@ struct RentYourTimeApp: App {
     @State private var selectionStore = ScreenTimeSelectionStore()
     @State private var notificationService = NotificationService()
     @State private var notificationPreferencesStore = NotificationPreferencesStore()
+    @State private var storeKitService = StoreKitService()
     private let modelContainer: ModelContainer
 
     init() {
@@ -32,6 +33,7 @@ struct RentYourTimeApp: App {
                 .environment(selectionStore)
                 .environment(notificationService)
                 .environment(notificationPreferencesStore)
+                .environment(storeKitService)
                 .task {
                     // Idempotentne dzięki stałemu identyfikatorowi requestu —
                     // bezpieczne do wywołania przy każdym starcie apki.

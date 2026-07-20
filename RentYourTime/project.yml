@@ -89,3 +89,4 @@ schemes:
         - RentYourTimeTests
     run:
       config: Debug
+      storeKitConfiguration: RentYourTime.storekit

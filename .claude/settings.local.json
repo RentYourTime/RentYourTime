@@ -63,7 +63,9 @@
       "Bash(rm -rf /tmp/probe*.swift /tmp/probe_test* \"/private/tmp/claude-501/-Users-awski-Downloads-RentYourTime/a3cb8f3a-2cde-444b-827a-2197632bdbf9/scratchpad\"/*)",
       "Bash(rm -rf build)",
       "Bash(rm -rf \"/private/tmp/claude-501/-Users-awski-Downloads-RentYourTime/a3cb8f3a-2cde-444b-827a-2197632bdbf9/scratchpad\"/* *)",
-      "Bash(xcodebuild -project RentYourTime.xcodeproj -target RentWidgetExtension -sdk iphoneos -configuration Debug CODE_SIGNING_ALLOWED=NO build)"
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -target RentWidgetExtension -sdk iphoneos -configuration Debug CODE_SIGNING_ALLOWED=NO build)",
+      "Bash(python3 -c \"import json; json.load\\(open\\('/Users/awski/Downloads/RentYourTime/RentYourTime/RentYourTime.storekit'\\)\\)\")",
+      "Bash(xcodegen --version)"
     ],
     "additionalDirectories": [
       "/private/tmp/Assets.xcassets.bak",

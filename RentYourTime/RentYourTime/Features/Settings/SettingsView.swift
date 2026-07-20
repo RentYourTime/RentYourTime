@@ -6,11 +6,13 @@ struct SettingsView: View {
     @Environment(ScreenTimeSelectionStore.self) private var selectionStore
     @Environment(NotificationService.self) private var notificationService
     @Environment(NotificationPreferencesStore.self) private var notificationPreferencesStore
+    @Environment(StoreKitService.self) private var storeKitService
     @Environment(\.openURL) private var openURL
 
     @State private var isSelectionSheetPresented = false
     @State private var isNotificationExplainerPresented = false
     @State private var pendingNotificationKind: NotificationKind?
+    @State private var isPaywallPresented = false
     @State private var deviceActivityService = DeviceActivityService()
     @State private var widgetSnapshotUpdater = WidgetSnapshotUpdater()
 
@@ -90,6 +92,13 @@ struct SettingsView: View {
                     }
                 }
 
+                Section("RentYourTime Pro") {
+                    LabeledContent("Status", value: storeKitService.isProActive ? "Aktywna" : "Nieaktywna")
+                    Button(storeKitService.isProActive ? "Zarządzaj subskrypcją" : "Zobacz plany Pro") {
+                        isPaywallPresented = true
+                    }
+                }
+
                 Section {
                     Button("Zresetuj onboarding", role: .destructive) {
                         appState.resetOnboarding()
@@ -112,6 +121,9 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $isNotificationExplainerPresented) {
                 NotificationPermissionExplainerView(onFinished: handlePermissionExplainerFinished)
+            }
+            .sheet(isPresented: $isPaywallPresented) {
+                PaywallView()
             }
         }
     }
@@ -173,4 +185,5 @@ struct SettingsView: View {
         .environment(ScreenTimeSelectionStore())
         .environment(NotificationService())
         .environment(NotificationPreferencesStore())
+        .environment(StoreKitService())
 }
