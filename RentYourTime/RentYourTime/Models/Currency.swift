@@ -7,6 +7,12 @@ enum Currency: String, CaseIterable, Identifiable, Codable, Hashable, Sendable {
 
     var id: String { rawValue }
 
+    var isoCode: String { rawValue.uppercased() }
+
+    init?(isoCode: String) {
+        self.init(rawValue: isoCode.lowercased())
+    }
+
     var symbol: String {
         switch self {
         case .pln: "zł"

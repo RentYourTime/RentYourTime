@@ -6,6 +6,8 @@ struct StatCard: View {
     let subtitle: String?
     var tint: Color = .accentColor
 
+    @ScaledMetric(relativeTo: .title2) private var valueFontSize: CGFloat = 26
+
     init(title: String, value: String, subtitle: String? = nil, tint: Color = .accentColor) {
         self.title = title
         self.value = value
@@ -17,23 +19,30 @@ struct StatCard: View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.white.opacity(0.6))
             Text(value)
-                .font(.title2.bold())
+                .font(.system(size: valueFontSize, weight: .bold, design: .rounded))
                 .foregroundStyle(tint)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
             if let subtitle {
                 Text(subtitle)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.white.opacity(0.5))
             }
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .background(Color.rentSurface, in: RoundedRectangle(cornerRadius: 16))
+        .accessibilityElement(children: .combine)
     }
 }
 
 #Preview {
-    StatCard(title: "Dzisiaj", value: "3h 07m", subtitle: "27 min ponad limit", tint: .orange)
-        .padding()
+    HStack(spacing: 12) {
+        StatCard(title: "Czas wykorzystany", value: "3h 07m", tint: .white)
+        StatCard(title: "Ponad limit", value: "27 min", subtitle: "od 22:14", tint: .red)
+    }
+    .padding()
+    .background(Color.rentBackground)
 }

@@ -31,10 +31,41 @@
       "Bash(mkdir -p ~/Library/Developer/Xcode/DerivedData/__claude_write_test__)",
       "Bash(security find-identity *)",
       "Bash(defaults read *)",
-      "Bash(xcodebuild -project RentYourTime.xcodeproj -target DeviceActivityMonitorExtension -sdk iphoneos -configuration Debug CODE_SIGNING_ALLOWED=NO build)"
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -target DeviceActivityMonitorExtension -sdk iphoneos -configuration Debug CODE_SIGNING_ALLOWED=NO build)",
+      "Bash(timeout 180 xcodebuild test -project RentYourTime.xcodeproj -scheme RentYourTime -destination 'platform=iOS Simulator,id=2300E1DD-B29D-4820-8053-3977B20D77A8' -only-testing:RentYourTimeTests/RentCalculationEngineTests)",
+      "Bash(xcodebuild test *)",
+      "Bash(xcodebuild build-for-testing *)",
+      "Bash(swiftc -O RentCalculationEngine.swift run_tests.swift -o rent_engine_tests)",
+      "Bash(./rent_engine_tests)",
+      "Bash(mv run_tests.swift main.swift)",
+      "Bash(swiftc -O RentCalculationEngine.swift main.swift -o rent_engine_tests)",
+      "Bash(rm -rf \"/private/tmp/claude-501/-Users-awski-Downloads-RentYourTime/a3cb8f3a-2cde-444b-827a-2197632bdbf9/scratchpad\"/*.swift \"/private/tmp/claude-501/-Users-awski-Downloads-RentYourTime/a3cb8f3a-2cde-444b-827a-2197632bdbf9/scratchpad/rent_engine_tests\" \"/private/tmp/claude-501/-Users-awski-Downloads-RentYourTime/a3cb8f3a-2cde-444b-827a-2197632bdbf9/scratchpad\"/*.swiftmodule 2>/dev/null *)",
+      "Bash(rm -f rent_engine_tests RentCalculationEngine.swift)",
+      "Bash(swiftc -O StreakCalculator.swift main.swift -o streak_tests)",
+      "Bash(./streak_tests)",
+      "Bash(rm -f StreakCalculator.swift main.swift streak_tests)",
+      "Bash(cp \"/Users/awski/Downloads/RentYourTime/RentYourTime/RentYourTime/Models/DailyUsageRecord.swift\" .)",
+      "Bash(cp \"/Users/awski/Downloads/RentYourTime/RentYourTime/RentYourTime/Models/StreakCalculator.swift\" .)",
+      "Bash(cp \"/Users/awski/Downloads/RentYourTime/RentYourTime/RentYourTime/Models/Currency.swift\" .)",
+      "Bash(cp \"/Users/awski/Downloads/RentYourTime/RentYourTime/RentYourTime/Models/RentCalculationEngine.swift\" .)",
+      "Bash(swiftc -O DailyUsageRecord.swift StreakCalculator.swift Currency.swift RentCalculationEngine.swift HistoryRepository.swift main.swift -o repository_tests)",
+      "Bash(swiftc -O DailyUsageRecord.swift StreakCalculator.swift Currency.swift RentCalculationEngine.swift HistoryRepository.swift runner.swift -o repository_tests)",
+      "Bash(./repository_tests)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(swiftc -O -parse-as-library /tmp/probe.swift -o /tmp/probe_test)",
+      "Bash(/tmp/probe_test)",
+      "Read(//private/tmp/**)",
+      "Bash(swiftc -O DailyUsageRecord.swift StreakCalculator.swift Currency.swift RentCalculationEngine.swift HistoryRepository.swift runner.swift -o repository_tests2)",
+      "Bash(./repository_tests2)",
+      "Bash(swiftc /tmp/probe5_model.swift /tmp/probe7_streak.swift /tmp/probe7_currency.swift /tmp/probe7_engine.swift /tmp/probe7_repo.swift /tmp/probe8_main.swift -o /tmp/probe_test8_debug)",
+      "Bash(/tmp/probe_test8_debug)",
+      "Bash(rm -f repository_tests repository_tests2)",
+      "Bash(rm -rf /tmp/probe*.swift /tmp/probe_test* \"/private/tmp/claude-501/-Users-awski-Downloads-RentYourTime/a3cb8f3a-2cde-444b-827a-2197632bdbf9/scratchpad\"/*)",
+      "Bash(rm -rf build)"
     ],
     "additionalDirectories": [
-      "/private/tmp/Assets.xcassets.bak"
+      "/private/tmp/Assets.xcassets.bak",
+      "/private/tmp/claude-501/-Users-awski-Downloads-RentYourTime/a3cb8f3a-2cde-444b-827a-2197632bdbf9/scratchpad"
     ]
   }
 }
