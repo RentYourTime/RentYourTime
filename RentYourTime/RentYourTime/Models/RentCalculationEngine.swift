@@ -1,11 +1,5 @@
 import Foundation
 
-enum RentStatus: String, Equatable, Sendable {
-    case free
-    case warning
-    case rentActive
-}
-
 struct RentCalculationInput: Equatable, Sendable {
     let usedMinutes: Int
     let freeAllowanceMinutes: Int

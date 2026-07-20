@@ -33,6 +33,8 @@ targets:
     dependencies:
       - target: DeviceActivityMonitorExtension
         embed: true
+      - target: RentWidgetExtension
+        embed: true
 
   DeviceActivityMonitorExtension:
     type: app-extension
@@ -47,6 +49,22 @@ targets:
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: Extensions/DeviceActivityMonitor/Info.plist
         CODE_SIGN_ENTITLEMENTS: Extensions/DeviceActivityMonitor/DeviceActivityMonitor.entitlements
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_STRICT_CONCURRENCY: complete
+
+  RentWidgetExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Extensions/RentWidget
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_NAME: RentWidget
+        PRODUCT_BUNDLE_IDENTIFIER: com.rentyourtime.app.RentWidget
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: Extensions/RentWidget/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Extensions/RentWidget/RentWidget.entitlements
         TARGETED_DEVICE_FAMILY: "1"
         SWIFT_STRICT_CONCURRENCY: complete
 

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DashboardView: View {
     @Environment(AppState.self) private var appState
+    @State private var widgetSnapshotUpdater = WidgetSnapshotUpdater()
 
     var body: some View {
         NavigationStack {
@@ -9,6 +10,9 @@ struct DashboardView: View {
                 .navigationTitle("Dashboard")
                 .toolbarBackground(Color.rentBackground, for: .navigationBar)
                 .toolbarColorScheme(.dark, for: .navigationBar)
+        }
+        .task {
+            widgetSnapshotUpdater.updateSnapshot(appState: appState)
         }
     }
 }

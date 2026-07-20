@@ -12,6 +12,7 @@ struct SettingsView: View {
     @State private var isNotificationExplainerPresented = false
     @State private var pendingNotificationKind: NotificationKind?
     @State private var deviceActivityService = DeviceActivityService()
+    @State private var widgetSnapshotUpdater = WidgetSnapshotUpdater()
 
     var body: some View {
         @Bindable var appState = appState
@@ -99,6 +100,9 @@ struct SettingsView: View {
             .task {
                 await notificationService.refreshStatus()
             }
+            .onChange(of: appState.dailyFreeLimitMinutes) { refreshWidgetSnapshot() }
+            .onChange(of: appState.pricePerExtraMinute) { refreshWidgetSnapshot() }
+            .onChange(of: appState.currency) { refreshWidgetSnapshot() }
             .sheet(isPresented: $isSelectionSheetPresented) {
                 ScreenTimeSelectionView(
                     title: "Śledzone aplikacje",
@@ -148,6 +152,10 @@ struct SettingsView: View {
                 notificationService.cancelEveningSummary()
             }
         }
+    }
+
+    private func refreshWidgetSnapshot() {
+        widgetSnapshotUpdater.updateSnapshot(appState: appState)
     }
 
     private var selectionSummary: String {
