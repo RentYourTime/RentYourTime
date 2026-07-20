@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p RentYourTime/RentYourTime/App RentYourTime/RentYourTime/Core RentYourTime/RentYourTime/Features/Onboarding RentYourTime/RentYourTime/Features/Dashboard RentYourTime/RentYourTime/Features/ScreenTime RentYourTime/RentYourTime/Features/History RentYourTime/RentYourTime/Features/Settings RentYourTime/RentYourTime/Services RentYourTime/RentYourTime/Models RentYourTime/RentYourTime/Components RentYourTime/RentYourTime/Extensions RentYourTime/RentYourTime/Resources RentYourTime/RentYourTimeTests RentYourTime/Extensions/DeviceActivityMonitor RentYourTime/Extensions/DeviceActivityReport RentYourTime/docs)",
+      "Bash(touch RentYourTime/README.md)",
+      "Bash(xcodebuild -version)",
+      "Bash(swift --version)",
+      "Bash(xcrun simctl *)",
+      "Bash(xcodegen generate *)",
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -scheme RentYourTime -destination 'platform=iOS Simulator,name=iPhone 17' build)",
+      "Bash(xcodebuild -showdestinations -project \"/Users/awski/Downloads/RentYourTime/RentYourTime/RentYourTime.xcodeproj\" -scheme RentYourTime)",
+      "Bash(xcodebuild -version -sdk)",
+      "Bash(xcode-select -p)",
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -scheme RentYourTime -destination 'generic/platform=iOS Simulator' build)",
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -scheme RentYourTime -destination 'id=7F355896-CDFB-48D3-8B09-9AEFD162BB27' build)",
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -scheme RentYourTime -sdk iphonesimulator build)",
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -target RentYourTime -sdk iphonesimulator -configuration Debug build)",
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -target RentYourTime -sdk iphoneos -configuration Debug CODE_SIGNING_ALLOWED=NO build)",
+      "Bash(mv \"RentYourTime/Resources/Assets.xcassets\" /tmp/Assets.xcassets.bak)",
+      "Bash(mv \"RentYourTime/Resources/Assets.xcassets\" \"/private/tmp/claude-501/-Users-awski-Downloads-RentYourTime/a3cb8f3a-2cde-444b-827a-2197632bdbf9/scratchpad/Assets.xcassets.bak\")",
+      "Bash(ls -la /tmp/Assets.xcassets.bak 2>&1)",
+      "Read(//private/tmp/Assets.xcassets.bak/**)",
+      "Bash(rm -rf /tmp/Assets.xcassets.bak)",
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -target RentYourTimeTests -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO build)",
+      "Bash(xcodebuild -project RentYourTime.xcodeproj -scheme RentYourTime -destination 'platform=iOS Simulator,id=7F355896-CDFB-48D3-8B09-9AEFD162BB27' test)"
+    ],
+    "additionalDirectories": [
+      "/private/tmp/Assets.xcassets.bak"
+    ]
+  }
+}
